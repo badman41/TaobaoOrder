@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
+using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -234,6 +236,7 @@ namespace SelectAll
             //HeaderCheckBox.Checked = true;
             //HeaderCheckBoxClick(HeaderCheckBox);
             this.btnExport.Enabled = true;
+            this.btnExportVtp.Enabled = true;
             Cursor = Cursors.Arrow;
         }
 
@@ -303,6 +306,25 @@ namespace SelectAll
                 }
             }
             Cursor = Cursors.Arrow;
+        }
+
+        private void btnExportVtp_Click(object sender, EventArgs e)
+        {
+            var templateFileInfo = new FileInfo(Path.Combine(Environment.CurrentDirectory, "Template", "vpt_template.xlsx"));
+            using var package = new ExcelPackage(templateFileInfo);
+            ExcelWorksheet wsEstimate = package.Workbook.Worksheets["Danh sách"];
+            wsEstimate.Cells["B9"].Value = "123";
+            wsEstimate.Cells["S9"].Value = "Người gửi trả";
+
+            using var saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Excel Files|*.xlsx";
+            saveFileDialog.Title = "Save an Excel File";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var excelFile = new FileInfo(saveFileDialog.FileName);
+                package.SaveAs(excelFile);
+                MessageBox.Show("Export successful!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

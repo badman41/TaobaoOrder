@@ -34,7 +34,7 @@ namespace OrderTool
             try
             {
                 var result = new List<Conversation>();
-                var url = $"{HttpClient.BaseAddress}/{PAGE_ID}/conversations?platform=messenger&access_token={ACCESS_TOKEN}&fields=updated_time,messages.fields(message, from, created_time).limit(1000)&limit(100)";
+                var url = $"{HttpClient.BaseAddress}/{PAGE_ID}/conversations?platform=messenger&access_token={ACCESS_TOKEN}&fields=updated_time,messages.fields(message, from, created_time).limit(100)&limit(100)";
 
                 while (result.Count == 0 || result[result.Count - 1].UpdatedTime > fromDate)
                 {

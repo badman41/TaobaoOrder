@@ -33,6 +33,14 @@ namespace SelectAll
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dgvSelectAll = new DataGridView();
+            chkBxSelect = new DataGridViewCheckBoxColumn();
+            txtCreatedTime = new DataGridViewTextBoxColumn();
+            txtCustomerName = new DataGridViewTextBoxColumn();
+            txtProductCode = new DataGridViewTextBoxColumn();
+            txtPhone = new DataGridViewTextBoxColumn();
+            txtAddress = new DataGridViewTextBoxColumn();
+            txtNote = new DataGridViewTextBoxColumn();
+            Id = new DataGridViewTextBoxColumn();
             button1 = new Button();
             groupBox1 = new GroupBox();
             radioLast = new RadioButton();
@@ -44,14 +52,7 @@ namespace SelectAll
             lblDays = new Label();
             inputDay = new NumericUpDown();
             btnExport = new Button();
-            chkBxSelect = new DataGridViewCheckBoxColumn();
-            txtCreatedTime = new DataGridViewTextBoxColumn();
-            txtCustomerName = new DataGridViewTextBoxColumn();
-            txtProductCode = new DataGridViewTextBoxColumn();
-            txtPhone = new DataGridViewTextBoxColumn();
-            txtAddress = new DataGridViewTextBoxColumn();
-            txtNote = new DataGridViewTextBoxColumn();
-            Id = new DataGridViewTextBoxColumn();
+            btnExportVtp = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvSelectAll).BeginInit();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)inputDay).BeginInit();
@@ -78,6 +79,68 @@ namespace SelectAll
             dgvSelectAll.RowTemplate.Resizable = DataGridViewTriState.True;
             dgvSelectAll.Size = new Size(1134, 441);
             dgvSelectAll.TabIndex = 0;
+            // 
+            // chkBxSelect
+            // 
+            chkBxSelect.DataPropertyName = "IsChecked";
+            chkBxSelect.HeaderText = "";
+            chkBxSelect.Name = "chkBxSelect";
+            chkBxSelect.Width = 50;
+            // 
+            // txtCreatedTime
+            // 
+            txtCreatedTime.DataPropertyName = "CreatedTime";
+            txtCreatedTime.HeaderText = "Thời gian";
+            txtCreatedTime.Name = "txtCreatedTime";
+            txtCreatedTime.Width = 150;
+            // 
+            // txtCustomerName
+            // 
+            txtCustomerName.DataPropertyName = "CustomerName";
+            txtCustomerName.HeaderText = "Tên khách hàng";
+            txtCustomerName.Name = "txtCustomerName";
+            txtCustomerName.ReadOnly = true;
+            txtCustomerName.Width = 150;
+            // 
+            // txtProductCode
+            // 
+            txtProductCode.DataPropertyName = "ProductCode";
+            txtProductCode.HeaderText = "Mã hàng hóa";
+            txtProductCode.Name = "txtProductCode";
+            txtProductCode.ReadOnly = true;
+            txtProductCode.Width = 120;
+            // 
+            // txtPhone
+            // 
+            txtPhone.DataPropertyName = "Phone";
+            txtPhone.HeaderText = "Số điện thoại";
+            txtPhone.Name = "txtPhone";
+            txtPhone.ReadOnly = true;
+            txtPhone.Width = 120;
+            // 
+            // txtAddress
+            // 
+            txtAddress.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            txtAddress.DataPropertyName = "Address";
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            txtAddress.DefaultCellStyle = dataGridViewCellStyle1;
+            txtAddress.HeaderText = "Địa chỉ";
+            txtAddress.Name = "txtAddress";
+            txtAddress.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // txtNote
+            // 
+            txtNote.DataPropertyName = "Note";
+            txtNote.HeaderText = "Ghi chú";
+            txtNote.Name = "txtNote";
+            txtNote.Width = 200;
+            // 
+            // Id
+            // 
+            Id.DataPropertyName = "Id";
+            Id.HeaderText = "Id";
+            Id.Name = "Id";
+            Id.Visible = false;
             // 
             // button1
             // 
@@ -190,78 +253,30 @@ namespace SelectAll
             btnExport.Enabled = false;
             btnExport.Location = new Point(173, 205);
             btnExport.Name = "btnExport";
-            btnExport.Size = new Size(88, 35);
+            btnExport.Size = new Size(169, 35);
             btnExport.TabIndex = 3;
-            btnExport.Text = "Export";
+            btnExport.Text = "Export danh sách đơn hàng";
             btnExport.UseVisualStyleBackColor = false;
             btnExport.Click += btnExport_Click;
             // 
-            // chkBxSelect
+            // btnExportVtp
             // 
-            chkBxSelect.DataPropertyName = "IsChecked";
-            chkBxSelect.HeaderText = "";
-            chkBxSelect.Name = "chkBxSelect";
-            chkBxSelect.Width = 50;
-            // 
-            // txtCreatedTime
-            // 
-            txtCreatedTime.DataPropertyName = "CreatedTime";
-            txtCreatedTime.HeaderText = "Thời gian";
-            txtCreatedTime.Name = "txtCreatedTime";
-            txtCreatedTime.Width = 150;
-            // 
-            // txtCustomerName
-            // 
-            txtCustomerName.DataPropertyName = "CustomerName";
-            txtCustomerName.HeaderText = "Tên khách hàng";
-            txtCustomerName.Name = "txtCustomerName";
-            txtCustomerName.ReadOnly = true;
-            txtCustomerName.Width = 150;
-            // 
-            // txtProductCode
-            // 
-            txtProductCode.DataPropertyName = "ProductCode";
-            txtProductCode.HeaderText = "Mã hàng hóa";
-            txtProductCode.Name = "txtProductCode";
-            txtProductCode.ReadOnly = true;
-            txtProductCode.Width = 120;
-            // 
-            // txtPhone
-            // 
-            txtPhone.DataPropertyName = "Phone";
-            txtPhone.HeaderText = "Số điện thoại";
-            txtPhone.Name = "txtPhone";
-            txtPhone.ReadOnly = true;
-            txtPhone.Width = 120;
-            // 
-            // txtAddress
-            // 
-            txtAddress.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            txtAddress.DataPropertyName = "Address";
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            txtAddress.DefaultCellStyle = dataGridViewCellStyle1;
-            txtAddress.HeaderText = "Địa chỉ";
-            txtAddress.Name = "txtAddress";
-            txtAddress.SortMode = DataGridViewColumnSortMode.NotSortable;
-            // 
-            // txtNote
-            // 
-            txtNote.DataPropertyName = "Note";
-            txtNote.HeaderText = "Ghi chú";
-            txtNote.Name = "txtNote";
-            txtNote.Width = 200;
-            // 
-            // Id
-            // 
-            Id.DataPropertyName = "Id";
-            Id.HeaderText = "Id";
-            Id.Name = "Id";
+            btnExportVtp.BackColor = Color.FromArgb(192, 0, 0);
+            btnExportVtp.ForeColor = SystemColors.ButtonHighlight;
+            btnExportVtp.Location = new Point(348, 205);
+            btnExportVtp.Name = "btnExportVtp";
+            btnExportVtp.Size = new Size(146, 35);
+            btnExportVtp.TabIndex = 4;
+            btnExportVtp.Text = "Export to ViettelPost";
+            btnExportVtp.UseVisualStyleBackColor = false;
+            btnExportVtp.Click += btnExportVtp_Click;
             // 
             // frmSelectAll
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1160, 706);
+            Controls.Add(btnExportVtp);
             Controls.Add(btnExport);
             Controls.Add(dgvSelectAll);
             Controls.Add(groupBox1);
@@ -279,7 +294,7 @@ namespace SelectAll
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dgvSelectAll;
+        private DataGridView dgvSelectAll;
 
         private Button button1;
         private GroupBox groupBox1;
@@ -293,6 +308,7 @@ namespace SelectAll
         private Label lblDays;
         private RadioButton radioLast;
         private Button btnExport;
+        private Button btnExportVtp;
         private DataGridViewCheckBoxColumn chkBxSelect;
         private DataGridViewTextBoxColumn txtCreatedTime;
         private DataGridViewTextBoxColumn txtCustomerName;
