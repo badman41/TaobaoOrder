@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,12 @@ namespace OrderTool.Models
     public class ConversationResponse
     {
         public List<Conversation> Data { get; set; }
+        public Paging Paging { get; set; }
     }
 
     public class Conversation
     {
-        [JsonPropertyName("updated_time")]
+        [JsonProperty("updated_time")]
         public DateTime UpdatedTime { get; set; }
         public string Id { get; set; }
         public ConversationMessage Messages { get; set; } = new();
@@ -23,5 +25,10 @@ namespace OrderTool.Models
     public class ConversationMessage
     {
         public List<MessageObj> Data { get; set; }
+    }
+
+    public class Paging
+    {
+        public string Next { get; set; } = string.Empty;
     }
 }

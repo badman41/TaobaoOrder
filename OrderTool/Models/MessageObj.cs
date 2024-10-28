@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace OrderTool.Models
 {
@@ -11,7 +6,7 @@ namespace OrderTool.Models
     {
         public string Id { get; set; } = string.Empty;
 
-        [JsonPropertyName("created_time")]
+        [JsonProperty("created_time")]
         public DateTime CreatedTime { get; set; }
         public string Message { get; set; } = string.Empty;
         public MessageFrom From { get; set; } = new();
