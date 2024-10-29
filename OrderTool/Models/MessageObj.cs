@@ -9,10 +9,14 @@ namespace OrderTool.Models
         [JsonProperty("created_time")]
         public DateTime CreatedTime { get; set; }
         public string Message { get; set; } = string.Empty;
-        public MessageFrom From { get; set; } = new();
+        public MessageToData To { get; set; } = new();
     }
 
-    public class MessageFrom
+    public class MessageToData
+    {
+        public List<MessageTo> Data { get; set; } = new();
+    }
+    public class MessageTo
     {
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

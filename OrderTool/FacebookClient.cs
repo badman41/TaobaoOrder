@@ -1,15 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using OrderTool.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace OrderTool
 {
@@ -20,7 +11,7 @@ namespace OrderTool
         public const int LIMiT = 200;
         public const string PAGE_ID = "411613095848376";
         public const string ACCESS_TOKEN = "EAAIjQtDKHq4BOxgyPKawZBnkuC5drkrVLS0jvyfJlbGOoBOnpLdeZAkv219TZBZCAQg8ykheNLzyytbyuyJ4yOeb81tOGiWDMRAIuFwNJ9UNru4ktPRG6nFRZBfLA0YKxSOTjDX1z0FKdhCdj76UJ4X0b9bY8lhcWVTpt0Jw8vYsJJEAE0mxzJfqd2Rb9XY6r";
-
+        public const string MESSAGE_ORDERED = "Dạ shop xin xác nhận lại đơn hàng của mình nha";
 
 
         public FacebookClient()
@@ -34,7 +25,7 @@ namespace OrderTool
             try
             {
                 var result = new List<Conversation>();
-                var url = $"{HttpClient.BaseAddress}/{PAGE_ID}/conversations?platform=messenger&access_token={ACCESS_TOKEN}&fields=updated_time,messages.fields(message, from, created_time).limit(100)&limit(100)";
+                var url = $"{HttpClient.BaseAddress}/{PAGE_ID}/conversations?platform=messenger&access_token={ACCESS_TOKEN}&fields=updated_time,messages.fields(message, to, created_time).limit(100)&limit(100)";
 
                 while (result.Count == 0 || result[result.Count - 1].UpdatedTime > fromDate)
                 {
@@ -56,21 +47,15 @@ namespace OrderTool
         {
             List<Chat> result = new List<Chat>();
 
-            var lstOrdered = conversations.Where(x => x.Messages.Data.Any(x => x.Message.Contains("đã đặt hàng") && x.CreatedTime >= fromDate && x.CreatedTime <= toDate));
-            foreach (var conversation in lstOrdered)
+            foreach (var conversation in conversations)
             {
-                var doneMessage = conversation.Messages.Data.FirstOrDefault(x => !string.IsNullOrEmpty(findPhone(x.Message)));
+                var doneMessage = conversation.Messages.Data.FirstOrDefault(x => x.Message.Contains(MESSAGE_ORDERED) && x.CreatedTime >= fromDate && x.CreatedTime <= toDate);
                 if (doneMessage is not null)
                 {
-                    var chat = new Chat()
-                    {
-                        ConversationId = conversation.Id,
-                        Message = doneMessage.Message,
-                        From = doneMessage.From.Name,
-                        UpdatedTime = conversation.UpdatedTime,
-                        MessageCreatedDate = doneMessage.CreatedTime,
-                        Phone = findPhone(doneMessage.Message)
-                    };
+                    var chat = findOrderInfo(doneMessage.Message);
+                    chat.ConversationId = conversation.Id;
+                    chat.MessageCreatedDate = doneMessage.CreatedTime;
+                    chat.CustomerName = doneMessage.To.Data.FirstOrDefault()?.Name ?? "";
                     result.Add(chat);
                 } 
                 
@@ -79,29 +64,36 @@ namespace OrderTool
 
             return result;
         }
-        private string findPhone(string text)
+        private Chat findOrderInfo(string input)
         {
-            const string MatchPhonePattern =
-                   @"(84|0[3|5|7|8|9])+([0-9]{8})\b";
+            const string productKey = "- Mẫu:";
+            const string phoneKey = "- SĐT:";
+            const string addressKey = "- Địa chỉ nhận hàng:";
+            const string noteKey = "*";
+            const string endKey = "Hàng shop chuyển từ Quảng Châu";
 
-            Regex rx = new Regex(MatchPhonePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            int productKeyIndex = input.IndexOf(productKey);
+            int phoneKeyIndex = input.IndexOf(phoneKey);
+            int addressKeyIndex = input.IndexOf(addressKey);
+            int noteKeyIndex = input.IndexOf(noteKey);
+            int endKeyIndex = input.IndexOf(endKey);
 
-            // Find matches.
-            MatchCollection matches = rx.Matches(text);
-
-            // Report the number of matches found.
-            int noOfMatches = matches.Count;
-
-
-            //Do something with the matches
-
-            foreach (Match match in matches)
+            var productDetail = input.Substring(productKeyIndex + productKey.Length + 1, phoneKeyIndex - (productKeyIndex + productKey.Length) - 2);
+            var productObj = productDetail.Split('-');
+            return new Chat()
             {
-                //Do something with the matches
-                string tempPhoneNumber = match.Value.ToString();
-                return tempPhoneNumber;
-            }
-            return "";
+                Message = input,
+                ProductDetail = productDetail,
+                Phone = input.Substring(phoneKeyIndex + phoneKey.Length + 1, addressKeyIndex - (phoneKeyIndex + phoneKey.Length) - 2),
+                Address = input.Substring(addressKeyIndex + addressKey.Length + 1, (noteKeyIndex > 0 ? noteKeyIndex : endKeyIndex) - (addressKeyIndex + addressKey.Length) - 2),
+                Note = noteKeyIndex > 0 ? input.Substring(noteKeyIndex + noteKey.Length, endKeyIndex - (noteKeyIndex + noteKey.Length) - 1) : "",
+                Product = new Product()
+                {
+                    Name = productObj[0],
+                    Size = productObj[1] ?? "",
+                    Price = productObj[2] ?? "0",
+                }
+            };
         }
     }
 

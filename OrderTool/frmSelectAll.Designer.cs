@@ -30,13 +30,15 @@ namespace SelectAll
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             dgvSelectAll = new DataGridView();
             chkBxSelect = new DataGridViewCheckBoxColumn();
             txtCreatedTime = new DataGridViewTextBoxColumn();
             txtCustomerName = new DataGridViewTextBoxColumn();
             txtProductCode = new DataGridViewTextBoxColumn();
+            Size = new DataGridViewTextBoxColumn();
+            Price = new DataGridViewTextBoxColumn();
             txtPhone = new DataGridViewTextBoxColumn();
             txtAddress = new DataGridViewTextBoxColumn();
             txtNote = new DataGridViewTextBoxColumn();
@@ -53,6 +55,7 @@ namespace SelectAll
             inputDay = new NumericUpDown();
             btnExport = new Button();
             btnExportVtp = new Button();
+            textBox1 = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvSelectAll).BeginInit();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)inputDay).BeginInit();
@@ -64,20 +67,20 @@ namespace SelectAll
             dgvSelectAll.AllowUserToDeleteRows = false;
             dgvSelectAll.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvSelectAll.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvSelectAll.Columns.AddRange(new DataGridViewColumn[] { chkBxSelect, txtCreatedTime, txtCustomerName, txtProductCode, txtPhone, txtAddress, txtNote, Id });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvSelectAll.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvSelectAll.Location = new Point(13, 253);
+            dgvSelectAll.Columns.AddRange(new DataGridViewColumn[] { chkBxSelect, txtCreatedTime, txtCustomerName, txtProductCode, Size, Price, txtPhone, txtAddress, txtNote, Id });
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvSelectAll.DefaultCellStyle = dataGridViewCellStyle4;
+            dgvSelectAll.Location = new Point(13, 188);
             dgvSelectAll.Margin = new Padding(4, 3, 4, 3);
             dgvSelectAll.Name = "dgvSelectAll";
             dgvSelectAll.RowTemplate.Resizable = DataGridViewTriState.True;
-            dgvSelectAll.Size = new Size(1134, 441);
+            dgvSelectAll.Size = new Size(1290, 475);
             dgvSelectAll.TabIndex = 0;
             // 
             // chkBxSelect
@@ -108,7 +111,20 @@ namespace SelectAll
             txtProductCode.HeaderText = "Mã hàng hóa";
             txtProductCode.Name = "txtProductCode";
             txtProductCode.ReadOnly = true;
-            txtProductCode.Width = 120;
+            // 
+            // Size
+            // 
+            Size.DataPropertyName = "Size";
+            Size.HeaderText = "Size";
+            Size.Name = "Size";
+            Size.Width = 50;
+            // 
+            // Price
+            // 
+            Price.DataPropertyName = "Price";
+            Price.HeaderText = "Giá";
+            Price.Name = "Price";
+            Price.Width = 70;
             // 
             // txtPhone
             // 
@@ -122,8 +138,8 @@ namespace SelectAll
             // 
             txtAddress.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             txtAddress.DataPropertyName = "Address";
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            txtAddress.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            txtAddress.DefaultCellStyle = dataGridViewCellStyle3;
             txtAddress.HeaderText = "Địa chỉ";
             txtAddress.Name = "txtAddress";
             txtAddress.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -145,7 +161,7 @@ namespace SelectAll
             // button1
             // 
             button1.BackColor = Color.Yellow;
-            button1.Location = new Point(12, 205);
+            button1.Location = new Point(12, 147);
             button1.Name = "button1";
             button1.Size = new Size(153, 35);
             button1.TabIndex = 0;
@@ -163,9 +179,9 @@ namespace SelectAll
             groupBox1.Controls.Add(dtFrom);
             groupBox1.Controls.Add(lblDays);
             groupBox1.Controls.Add(inputDay);
-            groupBox1.Location = new Point(12, 12);
+            groupBox1.Location = new Point(12, 20);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(1135, 187);
+            groupBox1.Size = new Size(1291, 87);
             groupBox1.TabIndex = 2;
             groupBox1.TabStop = false;
             groupBox1.Text = "Lọc";
@@ -174,7 +190,7 @@ namespace SelectAll
             // 
             radioLast.AutoSize = true;
             radioLast.Checked = true;
-            radioLast.Location = new Point(24, 22);
+            radioLast.Location = new Point(24, 36);
             radioLast.Name = "radioLast";
             radioLast.Size = new Size(46, 19);
             radioLast.TabIndex = 8;
@@ -185,7 +201,7 @@ namespace SelectAll
             // radioCustom
             // 
             radioCustom.AutoSize = true;
-            radioCustom.Location = new Point(24, 75);
+            radioCustom.Location = new Point(217, 35);
             radioCustom.Name = "radioCustom";
             radioCustom.Size = new Size(67, 19);
             radioCustom.TabIndex = 7;
@@ -197,7 +213,7 @@ namespace SelectAll
             // 
             lblTo.AutoSize = true;
             lblTo.Enabled = false;
-            lblTo.Location = new Point(44, 147);
+            lblTo.Location = new Point(493, 37);
             lblTo.Name = "lblTo";
             lblTo.Size = new Size(22, 15);
             lblTo.TabIndex = 6;
@@ -207,7 +223,7 @@ namespace SelectAll
             // 
             lblFrom.AutoSize = true;
             lblFrom.Enabled = false;
-            lblFrom.Location = new Point(30, 104);
+            lblFrom.Location = new Point(302, 37);
             lblFrom.Name = "lblFrom";
             lblFrom.Size = new Size(38, 15);
             lblFrom.TabIndex = 5;
@@ -217,7 +233,7 @@ namespace SelectAll
             // 
             dtTo.Enabled = false;
             dtTo.Format = DateTimePickerFormat.Short;
-            dtTo.Location = new Point(76, 143);
+            dtTo.Location = new Point(525, 33);
             dtTo.Name = "dtTo";
             dtTo.Size = new Size(123, 23);
             dtTo.TabIndex = 4;
@@ -226,7 +242,7 @@ namespace SelectAll
             // 
             dtFrom.Enabled = false;
             dtFrom.Format = DateTimePickerFormat.Short;
-            dtFrom.Location = new Point(76, 100);
+            dtFrom.Location = new Point(348, 33);
             dtFrom.Name = "dtFrom";
             dtFrom.Size = new Size(123, 23);
             dtFrom.TabIndex = 3;
@@ -234,7 +250,7 @@ namespace SelectAll
             // lblDays
             // 
             lblDays.AutoSize = true;
-            lblDays.Location = new Point(122, 24);
+            lblDays.Location = new Point(122, 38);
             lblDays.Name = "lblDays";
             lblDays.Size = new Size(31, 15);
             lblDays.TabIndex = 2;
@@ -242,7 +258,7 @@ namespace SelectAll
             // 
             // inputDay
             // 
-            inputDay.Location = new Point(76, 19);
+            inputDay.Location = new Point(76, 36);
             inputDay.Name = "inputDay";
             inputDay.Size = new Size(40, 23);
             inputDay.TabIndex = 0;
@@ -251,7 +267,7 @@ namespace SelectAll
             // 
             btnExport.BackColor = Color.FromArgb(0, 192, 0);
             btnExport.Enabled = false;
-            btnExport.Location = new Point(173, 205);
+            btnExport.Location = new Point(173, 147);
             btnExport.Name = "btnExport";
             btnExport.Size = new Size(169, 35);
             btnExport.TabIndex = 3;
@@ -263,7 +279,7 @@ namespace SelectAll
             // 
             btnExportVtp.BackColor = Color.FromArgb(192, 0, 0);
             btnExportVtp.ForeColor = SystemColors.ButtonHighlight;
-            btnExportVtp.Location = new Point(348, 205);
+            btnExportVtp.Location = new Point(348, 147);
             btnExportVtp.Name = "btnExportVtp";
             btnExportVtp.Size = new Size(146, 35);
             btnExportVtp.TabIndex = 4;
@@ -271,11 +287,21 @@ namespace SelectAll
             btnExportVtp.UseVisualStyleBackColor = false;
             btnExportVtp.Click += btnExportVtp_Click;
             // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(1100, 159);
+            textBox1.Name = "textBox1";
+            textBox1.PlaceholderText = "Search...";
+            textBox1.Size = new Size(203, 23);
+            textBox1.TabIndex = 9;
+            textBox1.TextChanged += textBox1_TextChanged;
+            // 
             // frmSelectAll
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1160, 706);
+            ClientSize = new Size(1316, 706);
+            Controls.Add(textBox1);
             Controls.Add(btnExportVtp);
             Controls.Add(btnExport);
             Controls.Add(dgvSelectAll);
@@ -290,6 +316,7 @@ namespace SelectAll
             groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)inputDay).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -313,10 +340,13 @@ namespace SelectAll
         private DataGridViewTextBoxColumn txtCreatedTime;
         private DataGridViewTextBoxColumn txtCustomerName;
         private DataGridViewTextBoxColumn txtProductCode;
+        private DataGridViewTextBoxColumn Size;
+        private DataGridViewTextBoxColumn Price;
         private DataGridViewTextBoxColumn txtPhone;
         private DataGridViewTextBoxColumn txtAddress;
         private DataGridViewTextBoxColumn txtNote;
         private DataGridViewTextBoxColumn Id;
+        private TextBox textBox1;
     }
 }
 

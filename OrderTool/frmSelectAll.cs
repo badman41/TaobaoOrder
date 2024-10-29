@@ -23,7 +23,7 @@ namespace SelectAll
         CheckBox HeaderCheckBox = null;
         bool IsHeaderCheckBoxClicked = false;
         public FacebookClient Client { get; set; }
-        public List<Chat> Chats { get; set; }
+        public List<Chat> Chats { get; set; } = new List<Chat>();
         public Dictionary<string, bool> ChatSelecteds = new Dictionary<string, bool>();
 
         public frmSelectAll()
@@ -46,65 +46,11 @@ namespace SelectAll
 
         private async Task BindGridView()
         {
-            dgvSelectAll.DataSource = await GetDataSource();
-
-            TotalCheckBoxes = dgvSelectAll.RowCount;
-            TotalCheckedCheckBoxes = 0;
+            await LoadData();
+            dgvSelectAll.DataSource = await GetDataSource(Chats);
+            AutoSelectAll();
         }
 
-        private async Task<DataTable> GetDataSource()
-        {
-            DataTable dTable = new DataTable();
-
-            DataRow dRow = null;
-            DateTime dTime;
-            Random rnd = new Random();
-
-            dTable.Columns.Add("IsChecked", System.Type.GetType("System.Boolean"));
-            dTable.Columns.Add("CustomerName");
-            dTable.Columns.Add("ProductCode");
-            dTable.Columns.Add("Phone");
-            dTable.Columns.Add("Address");
-            dTable.Columns.Add("CreatedTime");
-            dTable.Columns.Add("Note");
-            dTable.Columns.Add("Id");
-
-            var toDate = DateTime.Now;
-            var fromDate = DateTime.Now.Date;
-
-            if (radioLast.Checked)
-            {
-                fromDate = toDate.AddDays(-(int)inputDay.Value).Date;
-            }
-            else
-            {
-                fromDate = dtFrom.Value.Date;
-                toDate = dtTo.Value.AddDays(1).Date.AddTicks(-1);
-            }
-
-            var conversations = await Client.getListConversation(fromDate, toDate);
-
-            Chats = await Client.getListMessage(conversations, fromDate, toDate);
-            foreach (var message in Chats)
-            {
-                dRow = dTable.NewRow();
-                dTime = DateTime.Now;
-
-                dRow["IsChecked"] = "false";
-                dRow["CreatedTime"] = message.MessageCreatedDate.ToString("dd/MM/yyyy HH:mm");
-                dRow["CustomerName"] = message.From;
-                dRow["ProductCode"] = message.Phone;
-                dRow["Phone"] = message.Phone;
-                dRow["Address"] = message.Message;
-                dRow["Note"] = message.Phone;
-                dRow["Id"] = message.ConversationId;
-
-                dTable.Rows.Add(dRow);
-                dTable.AcceptChanges();
-            }
-
-            return dTable;
-        }
 
         private void dgvSelectAll_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
@@ -165,9 +111,15 @@ namespace SelectAll
         private void HeaderCheckBoxClick(CheckBox HCheckBox)
         {
             IsHeaderCheckBoxClicked = true;
-
+            ChatSelecteds = new Dictionary<string, bool>();
             foreach (DataGridViewRow Row in dgvSelectAll.Rows)
+            {
                 ((DataGridViewCheckBoxCell)Row.Cells["chkBxSelect"]).Value = HCheckBox.Checked;
+                if (HCheckBox.Checked)
+                {
+                    ChatSelecteds.Add(((DataGridViewTextBoxCell)Row.Cells["Id"]).Value.ToString()!, true);
+                }
+            }
 
             dgvSelectAll.RefreshEdit();
 
@@ -240,6 +192,50 @@ namespace SelectAll
             Cursor = Cursors.Arrow;
         }
 
+
+        private async Task<DataTable> GetDataSource(List<Chat> chats)
+        {
+            DataTable dTable = new DataTable();
+
+            DataRow dRow = null;
+            DateTime dTime;
+            Random rnd = new Random();
+
+            dTable.Columns.Add("IsChecked", System.Type.GetType("System.Boolean"));
+            dTable.Columns.Add("CustomerName");
+            dTable.Columns.Add("ProductCode");
+            dTable.Columns.Add("Size");
+            dTable.Columns.Add("Price");
+            dTable.Columns.Add("Phone");
+            dTable.Columns.Add("Address");
+            dTable.Columns.Add("CreatedTime");
+            dTable.Columns.Add("Note");
+            dTable.Columns.Add("Id");
+
+            
+            foreach (var message in chats)
+            {
+                dRow = dTable.NewRow();
+                dTime = DateTime.Now;
+
+                dRow["IsChecked"] = "false";
+                dRow["CreatedTime"] = message.MessageCreatedDate.ToString("dd/MM/yyyy HH:mm");
+                dRow["CustomerName"] = message.CustomerName;
+                dRow["ProductCode"] = message.Product.Name;
+                dRow["Size"] = message.Product.Size;
+                dRow["Price"] = message.Product.Price;
+                dRow["Phone"] = message.Phone;
+                dRow["Address"] = message.Address;
+                dRow["Note"] = message.Note;
+                dRow["Id"] = message.ConversationId;
+
+                dTable.Rows.Add(dRow);
+                dTable.AcceptChanges();
+            }
+
+            return dTable;
+        }
+
         private void btnExport_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
@@ -248,15 +244,17 @@ namespace SelectAll
                 var worksheet = package.Workbook.Worksheets.Add("Sheet1");
 
                 // Set the header
-                worksheet.Cells[1, 1].Value = "CreatedTime";
-                worksheet.Cells[1, 2].Value = "CustomerName";
-                worksheet.Cells[1, 3].Value = "ProductCode";
-                worksheet.Cells[1, 4].Value = "Phone";
-                worksheet.Cells[1, 5].Value = "Address";
-                worksheet.Cells[1, 6].Value = "Note";
+                worksheet.Cells[1, 1].Value = "Ngày tạo";
+                worksheet.Cells[1, 2].Value = "Tên khách hàng";
+                worksheet.Cells[1, 3].Value = "Tên sản phẩm";
+                worksheet.Cells[1, 4].Value = "Size";
+                worksheet.Cells[1, 5].Value = "Giá";
+                worksheet.Cells[1, 6].Value = "SĐT";
+                worksheet.Cells[1, 7].Value = "Địa chỉ";
+                worksheet.Cells[1, 8].Value = "Ghi chú";
 
                 // Style the header
-                using (var headerRange = worksheet.Cells[1, 1, 1, 6]) // Range for the header
+                using (var headerRange = worksheet.Cells[1, 1, 1, 8]) // Range for the header
                 {
                     headerRange.Style.Font.Bold = true; // Bold text
                     headerRange.Style.Font.Size = 12; // Font size
@@ -282,11 +280,13 @@ namespace SelectAll
                 for (int i = 0; i < chatSelecteds.Count; i++)
                 {
                     worksheet.Cells[i + 2, 1].Value = chatSelecteds[i].MessageCreatedDate.ToString("dd/MM/yyyy HH:mm");
-                    worksheet.Cells[i + 2, 2].Value = chatSelecteds[i].From;
-                    worksheet.Cells[i + 2, 3].Value = chatSelecteds[i].Phone;
-                    worksheet.Cells[i + 2, 4].Value = chatSelecteds[i].Phone;
-                    worksheet.Cells[i + 2, 5].Value = chatSelecteds[i].Message;
+                    worksheet.Cells[i + 2, 2].Value = chatSelecteds[i].CustomerName;
+                    worksheet.Cells[i + 2, 3].Value = chatSelecteds[i].Product.Name;
+                    worksheet.Cells[i + 2, 4].Value = chatSelecteds[i].Product.Size;
+                    worksheet.Cells[i + 2, 5].Value = chatSelecteds[i].Product.Price;
                     worksheet.Cells[i + 2, 6].Value = chatSelecteds[i].Phone;
+                    worksheet.Cells[i + 2, 7].Value = chatSelecteds[i].Address;
+                    worksheet.Cells[i + 2, 8].Value = chatSelecteds[i].Note;
                 }
 
                 // Auto-fit columns
@@ -313,8 +313,30 @@ namespace SelectAll
             var templateFileInfo = new FileInfo(Path.Combine(Environment.CurrentDirectory, "Template", "vpt_template.xlsx"));
             using var package = new ExcelPackage(templateFileInfo);
             ExcelWorksheet wsEstimate = package.Workbook.Worksheets["Danh sách"];
-            wsEstimate.Cells["B9"].Value = "123";
-            wsEstimate.Cells["S9"].Value = "Người gửi trả";
+            var chatSelecteds = Chats;
+            if (TotalCheckedCheckBoxes < TotalCheckBoxes)
+            {
+                chatSelecteds = Chats.Where(x => ChatSelecteds.ContainsKey(x.ConversationId)).ToList();
+            }
+
+            // Fill the data
+            for (int i = 0; i < chatSelecteds.Count; i++)
+            {
+                var index = i + 8;
+                wsEstimate.Cells[$"C{index}"].Value = chatSelecteds[i].CustomerName;
+                wsEstimate.Cells[$"D{index}"].Value = chatSelecteds[i].Phone;
+                wsEstimate.Cells[$"E{index}"].Value = chatSelecteds[i].Address;
+                wsEstimate.Cells[$"F{index}"].Value = $"{chatSelecteds[i].Product.Name}-{chatSelecteds[i].Product.Size}";
+                wsEstimate.Cells[$"G{index}"].Value = 1;
+                wsEstimate.Cells[$"H{index}"].Value = 400;
+                wsEstimate.Cells[$"I{index}"].Value = chatSelecteds[i].Product.Price;
+                wsEstimate.Cells[$"J{index}"].Value = chatSelecteds[i].Product.Price;
+                wsEstimate.Cells[$"K{index}"].Value = "Bưu kiện";
+                wsEstimate.Cells[$"M{index}"].Value = "ECOD - COD Liên tỉnh tiết kiệm";
+                wsEstimate.Cells[$"O{index}"].Value = 35000;
+                wsEstimate.Cells[$"S{index}"].Value = "Người nhận trả";
+                wsEstimate.Cells[$"T{index}"].Value = chatSelecteds[i].Note;
+            }
 
             using var saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Excel Files|*.xlsx";
@@ -325,6 +347,51 @@ namespace SelectAll
                 package.SaveAs(excelFile);
                 MessageBox.Show("Export successful!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private async void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            var input = textBox1.Text;
+            if (string.IsNullOrEmpty(input))
+            {
+                dgvSelectAll.DataSource = await GetDataSource(Chats);
+                AutoSelectAll();
+                return;
+            }
+            var chatSearched = Chats.Where(x => x.Message.Contains(input) || x.CustomerName.Contains(input));
+            if (chatSearched.Any())
+            {
+                dgvSelectAll.DataSource = await GetDataSource(chatSearched.ToList());
+                AutoSelectAll();
+            }
+        }
+
+        private async Task LoadData()
+        {
+            var toDate = DateTime.Now;
+            var fromDate = DateTime.Now.Date;
+
+            if (radioLast.Checked)
+            {
+                fromDate = toDate.AddDays(-(int)inputDay.Value).Date;
+            }
+            else
+            {
+                fromDate = dtFrom.Value.Date;
+                toDate = dtTo.Value.AddDays(1).Date.AddTicks(-1);
+            }
+
+            var conversations = await Client.getListConversation(fromDate, toDate);
+
+            Chats = await Client.getListMessage(conversations, fromDate, toDate);
+        } 
+
+        private void AutoSelectAll()
+        {
+            HeaderCheckBox.Checked = true;
+            HeaderCheckBoxClick(HeaderCheckBox);
+            TotalCheckBoxes = dgvSelectAll.RowCount;
+            TotalCheckedCheckBoxes = 0;
         }
     }
 }
