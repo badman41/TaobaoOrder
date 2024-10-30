@@ -30,8 +30,12 @@ namespace SelectAll
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSelectAll));
             dgvSelectAll = new DataGridView();
             chkBxSelect = new DataGridViewCheckBoxColumn();
             txtCreatedTime = new DataGridViewTextBoxColumn();
@@ -66,21 +70,43 @@ namespace SelectAll
             dgvSelectAll.AllowUserToAddRows = false;
             dgvSelectAll.AllowUserToDeleteRows = false;
             dgvSelectAll.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvSelectAll.BackgroundColor = Color.WhiteSmoke;
+            dgvSelectAll.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.IndianRed;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.Window;
+            dataGridViewCellStyle1.SelectionBackColor = Color.IndianRed;
+            dataGridViewCellStyle1.SelectionForeColor = Color.IndianRed;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvSelectAll.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvSelectAll.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSelectAll.Columns.AddRange(new DataGridViewColumn[] { chkBxSelect, txtCreatedTime, txtCustomerName, txtProductCode, Size, Price, txtPhone, txtAddress, txtNote, Id });
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dgvSelectAll.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.IndianRed;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = Color.White;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvSelectAll.DefaultCellStyle = dataGridViewCellStyle3;
+            dgvSelectAll.GridColor = Color.Maroon;
             dgvSelectAll.Location = new Point(13, 188);
             dgvSelectAll.Margin = new Padding(4, 3, 4, 3);
             dgvSelectAll.Name = "dgvSelectAll";
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.IndianRed;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = Color.IndianRed;
+            dataGridViewCellStyle4.SelectionForeColor = Color.IndianRed;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvSelectAll.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.BackColor = Color.Snow;
+            dataGridViewCellStyle5.SelectionBackColor = Color.Salmon;
+            dgvSelectAll.RowsDefaultCellStyle = dataGridViewCellStyle5;
             dgvSelectAll.RowTemplate.Resizable = DataGridViewTriState.True;
-            dgvSelectAll.Size = new Size(1290, 475);
+            dgvSelectAll.Size = new Size(1290, 506);
             dgvSelectAll.TabIndex = 0;
             // 
             // chkBxSelect
@@ -138,8 +164,8 @@ namespace SelectAll
             // 
             txtAddress.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             txtAddress.DataPropertyName = "Address";
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            txtAddress.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            txtAddress.DefaultCellStyle = dataGridViewCellStyle2;
             txtAddress.HeaderText = "Địa chỉ";
             txtAddress.Name = "txtAddress";
             txtAddress.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -179,6 +205,7 @@ namespace SelectAll
             groupBox1.Controls.Add(dtFrom);
             groupBox1.Controls.Add(lblDays);
             groupBox1.Controls.Add(inputDay);
+            groupBox1.FlatStyle = FlatStyle.Flat;
             groupBox1.Location = new Point(12, 20);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(1291, 87);
@@ -278,6 +305,7 @@ namespace SelectAll
             // btnExportVtp
             // 
             btnExportVtp.BackColor = Color.FromArgb(192, 0, 0);
+            btnExportVtp.Enabled = false;
             btnExportVtp.ForeColor = SystemColors.ButtonHighlight;
             btnExportVtp.Location = new Point(348, 147);
             btnExportVtp.Name = "btnExportVtp";
@@ -300,6 +328,7 @@ namespace SelectAll
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Lavender;
             ClientSize = new Size(1316, 706);
             Controls.Add(textBox1);
             Controls.Add(btnExportVtp);
@@ -307,9 +336,10 @@ namespace SelectAll
             Controls.Add(dgvSelectAll);
             Controls.Add(groupBox1);
             Controls.Add(button1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 3, 4, 3);
             Name = "frmSelectAll";
-            Text = "Select All Demo";
+            Text = "Chan Store Order";
             Load += frmSelectAll_Load;
             ((System.ComponentModel.ISupportInitialize)dgvSelectAll).EndInit();
             groupBox1.ResumeLayout(false);

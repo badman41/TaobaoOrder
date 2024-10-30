@@ -141,10 +141,11 @@ namespace SelectAll
                         TotalCheckedCheckBoxes++;
                     }
                 }
-                else if (TotalCheckedCheckBoxes > 0)
+                else
                 {
                     ChatSelecteds.Remove(id);
-                    TotalCheckedCheckBoxes--;
+                    if (TotalCheckedCheckBoxes > 0)
+                        TotalCheckedCheckBoxes--;
                 }
 
                 //Change state of the header CheckBox.
@@ -182,13 +183,18 @@ namespace SelectAll
         private async void button1_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
+            try
+            {
+                await BindGridView();
 
-            await BindGridView();
+                this.btnExport.Enabled = true;
+                this.btnExportVtp.Enabled = true;
 
-            //HeaderCheckBox.Checked = true;
-            //HeaderCheckBoxClick(HeaderCheckBox);
-            this.btnExport.Enabled = true;
-            this.btnExportVtp.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             Cursor = Cursors.Arrow;
         }
 
@@ -212,7 +218,7 @@ namespace SelectAll
             dTable.Columns.Add("Note");
             dTable.Columns.Add("Id");
 
-            
+
             foreach (var message in chats)
             {
                 dRow = dTable.NewRow();
@@ -239,37 +245,89 @@ namespace SelectAll
         private void btnExport_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            using (var package = new ExcelPackage())
+            try
             {
-                var worksheet = package.Workbook.Worksheets.Add("Sheet1");
-
-                // Set the header
-                worksheet.Cells[1, 1].Value = "Ngày tạo";
-                worksheet.Cells[1, 2].Value = "Tên khách hàng";
-                worksheet.Cells[1, 3].Value = "Tên sản phẩm";
-                worksheet.Cells[1, 4].Value = "Size";
-                worksheet.Cells[1, 5].Value = "Giá";
-                worksheet.Cells[1, 6].Value = "SĐT";
-                worksheet.Cells[1, 7].Value = "Địa chỉ";
-                worksheet.Cells[1, 8].Value = "Ghi chú";
-
-                // Style the header
-                using (var headerRange = worksheet.Cells[1, 1, 1, 8]) // Range for the header
+                using (var package = new ExcelPackage())
                 {
-                    headerRange.Style.Font.Bold = true; // Bold text
-                    headerRange.Style.Font.Size = 12; // Font size
-                    headerRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    headerRange.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue); // Background color
+                    var worksheet = package.Workbook.Worksheets.Add("Sheet1");
 
-                    // Set borders
-                    headerRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                    headerRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                    headerRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                    headerRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    // Set the header
+                    worksheet.Cells[1, 1].Value = "Ngày tạo";
+                    worksheet.Cells[1, 2].Value = "Tên khách hàng";
+                    worksheet.Cells[1, 3].Value = "Tên sản phẩm";
+                    worksheet.Cells[1, 4].Value = "Size";
+                    worksheet.Cells[1, 5].Value = "Giá";
+                    worksheet.Cells[1, 6].Value = "SĐT";
+                    worksheet.Cells[1, 7].Value = "Địa chỉ";
+                    worksheet.Cells[1, 8].Value = "Ghi chú";
 
-                    // Center align the text
-                    headerRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Style the header
+                    using (var headerRange = worksheet.Cells[1, 1, 1, 8]) // Range for the header
+                    {
+                        headerRange.Style.Font.Bold = true; // Bold text
+                        headerRange.Style.Font.Size = 12; // Font size
+                        headerRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        headerRange.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue); // Background color
+
+                        // Set borders
+                        headerRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        headerRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        headerRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        headerRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                        // Center align the text
+                        headerRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    }
+                    var chatSelecteds = Chats;
+                    if (TotalCheckedCheckBoxes < TotalCheckBoxes)
+                    {
+                        chatSelecteds = Chats.Where(x => ChatSelecteds.ContainsKey(x.ConversationId)).ToList();
+                    }
+
+                    // Fill the data
+                    for (int i = 0; i < chatSelecteds.Count; i++)
+                    {
+                        worksheet.Cells[i + 2, 1].Value = chatSelecteds[i].MessageCreatedDate.ToString("dd/MM/yyyy HH:mm");
+                        worksheet.Cells[i + 2, 2].Value = chatSelecteds[i].CustomerName;
+                        worksheet.Cells[i + 2, 3].Value = chatSelecteds[i].Product.Name;
+                        worksheet.Cells[i + 2, 4].Value = chatSelecteds[i].Product.Size;
+                        worksheet.Cells[i + 2, 5].Value = chatSelecteds[i].Product.Price;
+                        worksheet.Cells[i + 2, 6].Value = chatSelecteds[i].Phone;
+                        worksheet.Cells[i + 2, 7].Value = chatSelecteds[i].Address;
+                        worksheet.Cells[i + 2, 8].Value = chatSelecteds[i].Note;
+                    }
+
+                    // Auto-fit columns
+                    worksheet.Cells.AutoFitColumns();
+
+
+                    using (var saveFileDialog = new SaveFileDialog())
+                    {
+                        saveFileDialog.Filter = "Excel Files|*.xlsx";
+                        saveFileDialog.Title = "Save an Excel File";
+                        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            var excelFile = new FileInfo(saveFileDialog.FileName);
+                            package.SaveAs(excelFile);
+                            MessageBox.Show("Export successful!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            Cursor = Cursors.Arrow;
+        }
+
+        private void btnExportVtp_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var templateFileInfo = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template", "vpt_template.xlsx"));
+                using var package = new ExcelPackage(templateFileInfo);
+                ExcelWorksheet wsEstimate = package.Workbook.Worksheets["Danh sách"];
                 var chatSelecteds = Chats;
                 if (TotalCheckedCheckBoxes < TotalCheckBoxes)
                 {
@@ -279,73 +337,35 @@ namespace SelectAll
                 // Fill the data
                 for (int i = 0; i < chatSelecteds.Count; i++)
                 {
-                    worksheet.Cells[i + 2, 1].Value = chatSelecteds[i].MessageCreatedDate.ToString("dd/MM/yyyy HH:mm");
-                    worksheet.Cells[i + 2, 2].Value = chatSelecteds[i].CustomerName;
-                    worksheet.Cells[i + 2, 3].Value = chatSelecteds[i].Product.Name;
-                    worksheet.Cells[i + 2, 4].Value = chatSelecteds[i].Product.Size;
-                    worksheet.Cells[i + 2, 5].Value = chatSelecteds[i].Product.Price;
-                    worksheet.Cells[i + 2, 6].Value = chatSelecteds[i].Phone;
-                    worksheet.Cells[i + 2, 7].Value = chatSelecteds[i].Address;
-                    worksheet.Cells[i + 2, 8].Value = chatSelecteds[i].Note;
+                    var index = i + 8;
+                    wsEstimate.Cells[$"C{index}"].Value = chatSelecteds[i].CustomerName;
+                    wsEstimate.Cells[$"D{index}"].Value = chatSelecteds[i].Phone;
+                    wsEstimate.Cells[$"E{index}"].Value = chatSelecteds[i].Address;
+                    wsEstimate.Cells[$"F{index}"].Value = $"{chatSelecteds[i].Product.Name}-{chatSelecteds[i].Product.Size}";
+                    wsEstimate.Cells[$"G{index}"].Value = 1;
+                    wsEstimate.Cells[$"H{index}"].Value = 400;
+                    wsEstimate.Cells[$"I{index}"].Value = chatSelecteds[i].Product.Price;
+                    wsEstimate.Cells[$"J{index}"].Value = chatSelecteds[i].Product.Price;
+                    wsEstimate.Cells[$"K{index}"].Value = "Bưu kiện";
+                    wsEstimate.Cells[$"M{index}"].Value = "ECOD - COD Liên tỉnh tiết kiệm";
+                    wsEstimate.Cells[$"O{index}"].Value = 35000;
+                    wsEstimate.Cells[$"S{index}"].Value = "Người nhận trả";
+                    wsEstimate.Cells[$"T{index}"].Value = chatSelecteds[i].Note;
                 }
 
-                // Auto-fit columns
-                worksheet.Cells.AutoFitColumns();
-
-
-                using (var saveFileDialog = new SaveFileDialog())
+                using var saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Excel Files|*.xlsx";
+                saveFileDialog.Title = "Save an Excel File";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    saveFileDialog.Filter = "Excel Files|*.xlsx";
-                    saveFileDialog.Title = "Save an Excel File";
-                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        var excelFile = new FileInfo(saveFileDialog.FileName);
-                        package.SaveAs(excelFile);
-                        MessageBox.Show("Export successful!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    var excelFile = new FileInfo(saveFileDialog.FileName);
+                    package.SaveAs(excelFile);
+                    MessageBox.Show("Export successful!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            Cursor = Cursors.Arrow;
-        }
-
-        private void btnExportVtp_Click(object sender, EventArgs e)
-        {
-            var templateFileInfo = new FileInfo(Path.Combine(Environment.CurrentDirectory, "Template", "vpt_template.xlsx"));
-            using var package = new ExcelPackage(templateFileInfo);
-            ExcelWorksheet wsEstimate = package.Workbook.Worksheets["Danh sách"];
-            var chatSelecteds = Chats;
-            if (TotalCheckedCheckBoxes < TotalCheckBoxes)
+            catch (Exception ex)
             {
-                chatSelecteds = Chats.Where(x => ChatSelecteds.ContainsKey(x.ConversationId)).ToList();
-            }
-
-            // Fill the data
-            for (int i = 0; i < chatSelecteds.Count; i++)
-            {
-                var index = i + 8;
-                wsEstimate.Cells[$"C{index}"].Value = chatSelecteds[i].CustomerName;
-                wsEstimate.Cells[$"D{index}"].Value = chatSelecteds[i].Phone;
-                wsEstimate.Cells[$"E{index}"].Value = chatSelecteds[i].Address;
-                wsEstimate.Cells[$"F{index}"].Value = $"{chatSelecteds[i].Product.Name}-{chatSelecteds[i].Product.Size}";
-                wsEstimate.Cells[$"G{index}"].Value = 1;
-                wsEstimate.Cells[$"H{index}"].Value = 400;
-                wsEstimate.Cells[$"I{index}"].Value = chatSelecteds[i].Product.Price;
-                wsEstimate.Cells[$"J{index}"].Value = chatSelecteds[i].Product.Price;
-                wsEstimate.Cells[$"K{index}"].Value = "Bưu kiện";
-                wsEstimate.Cells[$"M{index}"].Value = "ECOD - COD Liên tỉnh tiết kiệm";
-                wsEstimate.Cells[$"O{index}"].Value = 35000;
-                wsEstimate.Cells[$"S{index}"].Value = "Người nhận trả";
-                wsEstimate.Cells[$"T{index}"].Value = chatSelecteds[i].Note;
-            }
-
-            using var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Excel Files|*.xlsx";
-            saveFileDialog.Title = "Save an Excel File";
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var excelFile = new FileInfo(saveFileDialog.FileName);
-                package.SaveAs(excelFile);
-                MessageBox.Show("Export successful!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -384,7 +404,7 @@ namespace SelectAll
             var conversations = await Client.getListConversation(fromDate, toDate);
 
             Chats = await Client.getListMessage(conversations, fromDate, toDate);
-        } 
+        }
 
         private void AutoSelectAll()
         {
