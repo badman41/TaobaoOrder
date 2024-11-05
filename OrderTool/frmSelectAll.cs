@@ -285,7 +285,7 @@ namespace SelectAll
                     {
                         chatSelecteds = Chats.Where(x => ChatSelecteds.ContainsKey(x.ConversationId)).ToList();
                     }
-
+                    chatSelecteds.Reverse();
                     // Fill the data
                     for (int i = 0; i < chatSelecteds.Count; i++)
                     {

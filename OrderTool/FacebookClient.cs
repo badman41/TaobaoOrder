@@ -36,7 +36,7 @@ namespace OrderTool
                     url = conversationResponse.Paging.Next;
                 }
 
-                return result.Where(x => x.UpdatedTime >= fromDate && x.UpdatedTime <= toDate).ToList();
+                return result.Where(x => x.UpdatedTime >= fromDate).ToList();
             }
             catch (Exception ex)
             {
