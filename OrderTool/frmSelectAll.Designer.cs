@@ -31,22 +31,15 @@ namespace SelectAll
         private void InitializeComponent()
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSelectAll));
             dgvSelectAll = new DataGridView();
-            chkBxSelect = new DataGridViewCheckBoxColumn();
-            txtCreatedTime = new DataGridViewTextBoxColumn();
-            txtCustomerName = new DataGridViewTextBoxColumn();
-            txtProductCode = new DataGridViewTextBoxColumn();
-            Size = new DataGridViewTextBoxColumn();
-            Price = new DataGridViewTextBoxColumn();
-            txtPhone = new DataGridViewTextBoxColumn();
-            txtAddress = new DataGridViewTextBoxColumn();
-            txtNote = new DataGridViewTextBoxColumn();
-            Id = new DataGridViewTextBoxColumn();
             button1 = new Button();
             groupBox1 = new GroupBox();
             radioLast = new RadioButton();
@@ -60,6 +53,17 @@ namespace SelectAll
             btnExport = new Button();
             btnExportVtp = new Button();
             textBox1 = new TextBox();
+            chkBxSelect = new DataGridViewCheckBoxColumn();
+            STT = new DataGridViewTextBoxColumn();
+            txtCreatedTime = new DataGridViewTextBoxColumn();
+            txtCustomerName = new DataGridViewTextBoxColumn();
+            txtProductCode = new DataGridViewTextBoxColumn();
+            Size = new DataGridViewTextBoxColumn();
+            Price = new DataGridViewTextBoxColumn();
+            txtPhone = new DataGridViewTextBoxColumn();
+            txtAddress = new DataGridViewTextBoxColumn();
+            txtNote = new DataGridViewTextBoxColumn();
+            Id = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvSelectAll).BeginInit();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)inputDay).BeginInit();
@@ -81,108 +85,33 @@ namespace SelectAll
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvSelectAll.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvSelectAll.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvSelectAll.Columns.AddRange(new DataGridViewColumn[] { chkBxSelect, txtCreatedTime, txtCustomerName, txtProductCode, Size, Price, txtPhone, txtAddress, txtNote, Id });
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.IndianRed;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = Color.White;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgvSelectAll.DefaultCellStyle = dataGridViewCellStyle3;
+            dgvSelectAll.Columns.AddRange(new DataGridViewColumn[] { chkBxSelect, STT, txtCreatedTime, txtCustomerName, txtProductCode, Size, Price, txtPhone, txtAddress, txtNote, Id });
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = Color.IndianRed;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = Color.White;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            dgvSelectAll.DefaultCellStyle = dataGridViewCellStyle6;
             dgvSelectAll.GridColor = Color.Maroon;
             dgvSelectAll.Location = new Point(13, 188);
             dgvSelectAll.Margin = new Padding(4, 3, 4, 3);
             dgvSelectAll.Name = "dgvSelectAll";
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = Color.IndianRed;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = Color.IndianRed;
-            dataGridViewCellStyle4.SelectionForeColor = Color.IndianRed;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dgvSelectAll.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
-            dataGridViewCellStyle5.BackColor = Color.Snow;
-            dataGridViewCellStyle5.SelectionBackColor = Color.Salmon;
-            dgvSelectAll.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = Color.IndianRed;
+            dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = Color.IndianRed;
+            dataGridViewCellStyle7.SelectionForeColor = Color.IndianRed;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
+            dgvSelectAll.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle8.BackColor = Color.Snow;
+            dataGridViewCellStyle8.SelectionBackColor = Color.Salmon;
+            dgvSelectAll.RowsDefaultCellStyle = dataGridViewCellStyle8;
             dgvSelectAll.RowTemplate.Resizable = DataGridViewTriState.True;
-            dgvSelectAll.Size = new Size(1290, 506);
+            dgvSelectAll.Size = new Size(1323, 506);
             dgvSelectAll.TabIndex = 0;
-            // 
-            // chkBxSelect
-            // 
-            chkBxSelect.DataPropertyName = "IsChecked";
-            chkBxSelect.HeaderText = "";
-            chkBxSelect.Name = "chkBxSelect";
-            chkBxSelect.Width = 50;
-            // 
-            // txtCreatedTime
-            // 
-            txtCreatedTime.DataPropertyName = "CreatedTime";
-            txtCreatedTime.HeaderText = "Thời gian";
-            txtCreatedTime.Name = "txtCreatedTime";
-            txtCreatedTime.Width = 150;
-            // 
-            // txtCustomerName
-            // 
-            txtCustomerName.DataPropertyName = "CustomerName";
-            txtCustomerName.HeaderText = "Tên khách hàng";
-            txtCustomerName.Name = "txtCustomerName";
-            txtCustomerName.ReadOnly = true;
-            txtCustomerName.Width = 150;
-            // 
-            // txtProductCode
-            // 
-            txtProductCode.DataPropertyName = "ProductCode";
-            txtProductCode.HeaderText = "Mã hàng hóa";
-            txtProductCode.Name = "txtProductCode";
-            txtProductCode.ReadOnly = true;
-            // 
-            // Size
-            // 
-            Size.DataPropertyName = "Size";
-            Size.HeaderText = "Size";
-            Size.Name = "Size";
-            Size.Width = 50;
-            // 
-            // Price
-            // 
-            Price.DataPropertyName = "Price";
-            Price.HeaderText = "Giá";
-            Price.Name = "Price";
-            Price.Width = 70;
-            // 
-            // txtPhone
-            // 
-            txtPhone.DataPropertyName = "Phone";
-            txtPhone.HeaderText = "Số điện thoại";
-            txtPhone.Name = "txtPhone";
-            txtPhone.ReadOnly = true;
-            txtPhone.Width = 120;
-            // 
-            // txtAddress
-            // 
-            txtAddress.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            txtAddress.DataPropertyName = "Address";
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            txtAddress.DefaultCellStyle = dataGridViewCellStyle2;
-            txtAddress.HeaderText = "Địa chỉ";
-            txtAddress.Name = "txtAddress";
-            txtAddress.SortMode = DataGridViewColumnSortMode.NotSortable;
-            // 
-            // txtNote
-            // 
-            txtNote.DataPropertyName = "Note";
-            txtNote.HeaderText = "Ghi chú";
-            txtNote.Name = "txtNote";
-            txtNote.Width = 200;
-            // 
-            // Id
-            // 
-            Id.DataPropertyName = "Id";
-            Id.HeaderText = "Id";
-            Id.Name = "Id";
-            Id.Visible = false;
             // 
             // button1
             // 
@@ -208,7 +137,7 @@ namespace SelectAll
             groupBox1.FlatStyle = FlatStyle.Flat;
             groupBox1.Location = new Point(12, 20);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(1291, 87);
+            groupBox1.Size = new Size(1324, 87);
             groupBox1.TabIndex = 2;
             groupBox1.TabStop = false;
             groupBox1.Text = "Lọc";
@@ -317,19 +246,107 @@ namespace SelectAll
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(1100, 159);
+            textBox1.Location = new Point(1134, 159);
             textBox1.Name = "textBox1";
             textBox1.PlaceholderText = "Search...";
             textBox1.Size = new Size(203, 23);
             textBox1.TabIndex = 9;
             textBox1.TextChanged += textBox1_TextChanged;
             // 
+            // chkBxSelect
+            // 
+            chkBxSelect.DataPropertyName = "IsChecked";
+            chkBxSelect.HeaderText = "";
+            chkBxSelect.Name = "chkBxSelect";
+            chkBxSelect.Width = 50;
+            // 
+            // STT
+            // 
+            STT.DataPropertyName = "STT";
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            STT.DefaultCellStyle = dataGridViewCellStyle2;
+            STT.HeaderText = "STT";
+            STT.Name = "STT";
+            STT.Width = 40;
+            // 
+            // txtCreatedTime
+            // 
+            txtCreatedTime.DataPropertyName = "CreatedTime";
+            txtCreatedTime.HeaderText = "Thời gian";
+            txtCreatedTime.Name = "txtCreatedTime";
+            txtCreatedTime.Width = 150;
+            // 
+            // txtCustomerName
+            // 
+            txtCustomerName.DataPropertyName = "CustomerName";
+            txtCustomerName.HeaderText = "Tên khách hàng";
+            txtCustomerName.Name = "txtCustomerName";
+            txtCustomerName.ReadOnly = true;
+            txtCustomerName.Width = 150;
+            // 
+            // txtProductCode
+            // 
+            txtProductCode.DataPropertyName = "ProductCode";
+            txtProductCode.HeaderText = "Mã hàng hóa";
+            txtProductCode.Name = "txtProductCode";
+            txtProductCode.ReadOnly = true;
+            // 
+            // Size
+            // 
+            Size.DataPropertyName = "Size";
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Size.DefaultCellStyle = dataGridViewCellStyle3;
+            Size.HeaderText = "Size";
+            Size.Name = "Size";
+            Size.Width = 50;
+            // 
+            // Price
+            // 
+            Price.DataPropertyName = "Price";
+            Price.HeaderText = "Giá";
+            Price.Name = "Price";
+            Price.Width = 70;
+            // 
+            // txtPhone
+            // 
+            txtPhone.DataPropertyName = "Phone";
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            txtPhone.DefaultCellStyle = dataGridViewCellStyle4;
+            txtPhone.HeaderText = "Số điện thoại";
+            txtPhone.Name = "txtPhone";
+            txtPhone.ReadOnly = true;
+            txtPhone.Width = 120;
+            // 
+            // txtAddress
+            // 
+            txtAddress.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            txtAddress.DataPropertyName = "Address";
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            txtAddress.DefaultCellStyle = dataGridViewCellStyle5;
+            txtAddress.HeaderText = "Địa chỉ";
+            txtAddress.Name = "txtAddress";
+            txtAddress.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // txtNote
+            // 
+            txtNote.DataPropertyName = "Note";
+            txtNote.HeaderText = "Ghi chú";
+            txtNote.Name = "txtNote";
+            txtNote.Width = 200;
+            // 
+            // Id
+            // 
+            Id.DataPropertyName = "Id";
+            Id.HeaderText = "Id";
+            Id.Name = "Id";
+            Id.Visible = false;
+            // 
             // frmSelectAll
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Lavender;
-            ClientSize = new Size(1316, 706);
+            ClientSize = new Size(1349, 706);
             Controls.Add(textBox1);
             Controls.Add(btnExportVtp);
             Controls.Add(btnExport);
@@ -366,7 +383,9 @@ namespace SelectAll
         private RadioButton radioLast;
         private Button btnExport;
         private Button btnExportVtp;
+        private TextBox textBox1;
         private DataGridViewCheckBoxColumn chkBxSelect;
+        private DataGridViewTextBoxColumn STT;
         private DataGridViewTextBoxColumn txtCreatedTime;
         private DataGridViewTextBoxColumn txtCustomerName;
         private DataGridViewTextBoxColumn txtProductCode;
@@ -376,7 +395,6 @@ namespace SelectAll
         private DataGridViewTextBoxColumn txtAddress;
         private DataGridViewTextBoxColumn txtNote;
         private DataGridViewTextBoxColumn Id;
-        private TextBox textBox1;
     }
 }
 

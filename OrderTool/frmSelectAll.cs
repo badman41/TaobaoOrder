@@ -208,6 +208,7 @@ namespace SelectAll
             Random rnd = new Random();
 
             dTable.Columns.Add("IsChecked", System.Type.GetType("System.Boolean"));
+            dTable.Columns.Add("STT");
             dTable.Columns.Add("CustomerName");
             dTable.Columns.Add("ProductCode");
             dTable.Columns.Add("Size");
@@ -225,6 +226,7 @@ namespace SelectAll
                 dTime = DateTime.Now;
 
                 dRow["IsChecked"] = "false";
+                dRow["STT"] = chats.IndexOf(message) + 1;
                 dRow["CreatedTime"] = message.MessageCreatedDate.ToString("dd/MM/yyyy HH:mm");
                 dRow["CustomerName"] = message.CustomerName;
                 dRow["ProductCode"] = message.Product.Name;
@@ -344,10 +346,11 @@ namespace SelectAll
                     wsEstimate.Cells[$"F{index}"].Value = $"{chatSelecteds[i].Product.Name}-{chatSelecteds[i].Product.Size}";
                     wsEstimate.Cells[$"G{index}"].Value = 1;
                     wsEstimate.Cells[$"H{index}"].Value = 400;
-                    wsEstimate.Cells[$"I{index}"].Value = chatSelecteds[i].Product.Price;
-                    wsEstimate.Cells[$"J{index}"].Value = chatSelecteds[i].Product.Price;
+                    wsEstimate.Cells[$"I{index}"].Value = double.Parse(chatSelecteds[i].Product.Price.Replace(".", "").Trim());
+                    wsEstimate.Cells[$"J{index}"].Value = double.Parse(chatSelecteds[i].Product.Price.Replace(".", "").Trim());
                     wsEstimate.Cells[$"K{index}"].Value = "Bưu kiện";
-                    wsEstimate.Cells[$"M{index}"].Value = "ECOD - COD Liên tỉnh tiết kiệm";
+                    wsEstimate.Cells[$"M{index}"].Value = "LCOD - Chuyển phát tiết kiệm";
+                    wsEstimate.Cells[$"N{index}"].Value = "XMG";
                     wsEstimate.Cells[$"O{index}"].Value = 35000;
                     wsEstimate.Cells[$"S{index}"].Value = "Người nhận trả";
                     wsEstimate.Cells[$"T{index}"].Value = chatSelecteds[i].Note;

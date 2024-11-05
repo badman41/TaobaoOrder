@@ -80,13 +80,14 @@ namespace OrderTool
 
             var productDetail = input.Substring(productKeyIndex + productKey.Length + 1, phoneKeyIndex - (productKeyIndex + productKey.Length) - 2);
             var productObj = productDetail.Split('-');
+            var noteLength = endKeyIndex -(noteKeyIndex + noteKey.Length) - 1;
             return new Chat()
             {
                 Message = input,
                 ProductDetail = productDetail,
                 Phone = input.Substring(phoneKeyIndex + phoneKey.Length + 1, addressKeyIndex - (phoneKeyIndex + phoneKey.Length) - 2),
                 Address = input.Substring(addressKeyIndex + addressKey.Length + 1, (noteKeyIndex > 0 ? noteKeyIndex : endKeyIndex) - (addressKeyIndex + addressKey.Length) - 2),
-                Note = noteKeyIndex > 0 ? input.Substring(noteKeyIndex + noteKey.Length, endKeyIndex - (noteKeyIndex + noteKey.Length) - 1) : "",
+                Note = noteKeyIndex > 0 && noteLength > 0 ? input.Substring(noteKeyIndex + noteKey.Length, noteLength) : "",
                 Product = new Product()
                 {
                     Name = productObj[0],
